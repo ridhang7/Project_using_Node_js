@@ -3,14 +3,20 @@ const app = express()
 // v1Routes has information about the which path to choose and which method to choose
 const v1Routes = require('./routes/v1');
 const connectDB = require('./db/connect');
+const notFound = require('./middleware/notFound')
+const errorHandlerMiddleware = require('./middleware/errorHandler')
 require('dotenv').config()
 const port = process.env.port;
 
-app.use(express.json())
+app.use(express.json());
 
-app.use(express.static('./public'))
+app.use(express.static('./public'));
 
-app.use('/api/v1', v1Routes)
+app.use('/api/v1', v1Routes);
+
+app.use(notFound);
+
+app.use(errorHandlerMiddleware);
 
 // get - /api/v1/task
 // post - /api/v1/task
